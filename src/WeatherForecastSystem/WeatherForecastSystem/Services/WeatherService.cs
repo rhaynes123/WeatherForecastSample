@@ -2,7 +2,7 @@
 using System.Text;
 using WeatherForecastSystem.DTOs;
 using WeatherForecastSystem.Interfaces;
-
+using WeatherForecastSystem.Models;
 namespace WeatherForecastSystem.Services
 {
     public class WeatherService: IWeatherService
@@ -23,13 +23,12 @@ namespace WeatherForecastSystem.Services
 
         public async Task<WeatherResponse> GetWeatherResponseAsync(LocationResponse locationResponse)
         {
-            var queryString = new StringBuilder("data/2.5/weather?");
-            queryString.Append($"lat={locationResponse.Latitude}");
-            queryString.Append($"&lon={locationResponse.Longitutde}");
-            queryString.Append($"&limit=10");
-            queryString.Append($"&appid={ApiKey}");
-            queryString.Append("&units=imperial");
-            HttpResponseMessage response = await _client.GetAsync(queryString.ToString());
+            WeatherQueryStringBuilder querystring = new WeatherQueryStringBuilder("data/2.5/weather?")
+                .AddLatAndLon(locationResponse.Latitude, locationResponse.Longitutde)
+                .AddLimit(10)
+                .AddApiKey(ApiKey: ApiKey)
+                .AddUnitsOfMeasure("imperial");
+            HttpResponseMessage response = await _client.GetAsync(querystring.Build());
             if (!response.IsSuccessStatusCode || response.Content is null)
             {
                 throw new Exception($"Endpoint return bad status code {response.StatusCode}");

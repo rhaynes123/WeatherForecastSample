@@ -1,6 +1,7 @@
-﻿namespace WeatherForecastTests.Tests
+﻿using System;
+namespace WeatherForecastTests.Tests
 {
-    public class LocationServiceTests
+    public class WeatherServiceTests
     {
         #region Resource Links
         // https://www.youtube.com/watch?v=7OFZZAHGv9o
@@ -12,23 +13,22 @@
         private readonly IConfiguration configuration;
         private readonly Mock<IHttpClientFactory> _mockClientFactory = new();
         private readonly MockHttpMessageHandler _mockHttpMessageHandler = new();
-        public LocationServiceTests()
+        public WeatherServiceTests()
         {
             configuration = TestConfigurationHelper.SharedTestConfiguration();
         }
-
         [Fact]
-        public async Task ShouldReturnLocationDataAsync()
+        public async Task ShouldReturnWeatherDataAsync()
         {
             //Arrange
-            int locationCount = 5;
             string folder = Environment.CurrentDirectory;
-            string filePath = Path.Combine(folder,$@"TestFiles/LocationSampleCityTestFile.json") ;
+            string filePath = Path.Combine(folder, $@"TestFiles/WeatherForSampleCityTestFile.json");
             string jsonString = File.ReadAllText(filePath);
-            string queryString = new WeatherQueryStringBuilder($"{BaseUrl}geo/1.0/direct?q=")
-                .AddCity("Detroit")
+            string queryString = new WeatherQueryStringBuilder($"{BaseUrl}data/2.5/weather?")
+                .AddLatAndLon(latitude: 42.3314m, longitude: -83.0458m)
                 .AddLimit(10)
                 .AddApiKey("TestKey")
+                .AddUnitsOfMeasure("imperial")
                 .Build();
             _mockHttpMessageHandler.When(queryString)
                 .Respond(HttpStatusCode.OK, "application/json", jsonString);
@@ -37,10 +37,15 @@
                 BaseAddress = new Uri(BaseUrl)
             }); ;
             //Act
-            var locationService = new LocationService(_mockClientFactory.Object, configuration);
-            var result = await locationService.GetLocationsResponseAsync(new LocationRequest("Detroit", string.Empty, string.Empty));
+            WeatherService weatherService = new WeatherService(_mockClientFactory.Object, configuration);
+            var result = await weatherService.GetWeatherResponseAsync(new LocationResponse()
+            {
+                Latitude = 42.3314m,
+                Longitutde = -83.0458m
+            });
             //Assert
-            Assert.Equal(locationCount, result.LocationResponses.Count());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Weathers);
         }
     }
 }

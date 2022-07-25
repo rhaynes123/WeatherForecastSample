@@ -37,7 +37,7 @@ public class IndexModel : PageModel
             return Page();
         }
         var locations = await _locationService.GetLocationsResponseAsync(LocationRequest);
-        if(locations.LocationResponses is not null || locations.LocationResponses.Any())
+        if(locations.LocationResponses is not null && locations.LocationResponses.Any())
         {
             WeatherResponse = await _weatherService.GetWeatherResponseAsync(locationResponse: locations.LocationResponses.First());
         }

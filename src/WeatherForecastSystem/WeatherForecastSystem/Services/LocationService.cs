@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WeatherForecastSystem.DTOs;
 using WeatherForecastSystem.Interfaces;
 using System.Collections.Generic;
+using WeatherForecastSystem.Models;
 
 namespace WeatherForecastSystem.Services
 {
@@ -32,18 +33,12 @@ namespace WeatherForecastSystem.Services
 
         public async Task<LocationsReponse> GetLocationsResponseAsync(LocationRequest locationRequest)
         {
-            var queryString = new StringBuilder("geo/1.0/direct?q=");
-            if (!string.IsNullOrWhiteSpace(locationRequest.City))
-            {
-                queryString.Append($"{locationRequest.City},");
-            }
-            if (!string.IsNullOrWhiteSpace(locationRequest.State))
-            {
-                queryString.Append($"{locationRequest.State},");
-            }
-            queryString.Append($"&limit=10");
-            queryString.Append($"&appid={ApiKey}");
-            HttpResponseMessage response = await _client.GetAsync(queryString.ToString());
+            WeatherQueryStringBuilder queryString = new WeatherQueryStringBuilder("geo/1.0/direct?q=")
+               .AddCity(locationRequest.City)
+               .AddState(locationRequest.State)
+                .AddLimit(10)
+               .AddApiKey(ApiKey: ApiKey);
+            HttpResponseMessage response = await _client.GetAsync(queryString.Build());
             if(response is null)
             {
                 ArgumentNullException.ThrowIfNull(response);

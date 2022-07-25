@@ -2,7 +2,9 @@
 using WeatherForecastSystem.Interfaces;
 using Polly;
 #region External Links
+// https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0
 // https://www.youtube.com/watch?v=9pgvX_Dk0n8
+// https://www.infoq.com/articles/creating-http-sdks-dotnet-6/
 #endregion External Links
 var builder = WebApplication.CreateBuilder(args);
 
