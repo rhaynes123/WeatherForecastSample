@@ -5,7 +5,64 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome To My Own Little Weather Forecast Site</h1>
 </div>
 
+<div>
+    <div class="col-md-2">
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LocationRequest.City" class="control-label"></label>
+                <input asp-for="LocationRequest.City" class="form-control" />
+                <span asp-validation-for="LocationRequest.City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LocationRequest.State" class="control-label"></label>
+                <input asp-for="LocationRequest.State" class="form-control" />
+                <span asp-validation-for="LocationRequest.State" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LocationRequest.ZipCode" class="control-label"></label>
+                <input asp-for="LocationRequest.ZipCode" class="form-control" />
+                <span asp-validation-for="LocationRequest.ZipCode" class="text-danger"></span>
+            </div>
+            <div>
+                <p>
+                    Current Temp: @Model?.WeatherResponse?.Main?.Temp <br />
+                    High: @Model?.WeatherResponse?.Main?.TempMax <br />
+                    Low: @Model?.WeatherResponse?.Main?.TempMin <br />
+                    Feels Like: @Model?.WeatherResponse?.Main?.FeelsLike <br />
+                </p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Main</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(Model is not null
+                                && Model.WeatherResponse is not null
+                                && Model.WeatherResponse.Weathers is not null
+                                && Model.WeatherResponse.Weathers.Any())
+                        {
+                            foreach (var weather in Model.WeatherResponse.Weathers)
+                            {
+                                <tr>
+                                    <td>@weather.Description</td>
+                                    <td>@weather.Main</td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit" class="btn btn-success">Search</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿[
+  {
+    "name": "Detroit",
+    "local_names": {
+      "vi": "Detroit",
+      "zh": "底特律",
+      "oc": "Detroit",
+      "th": "ดีทรอยต์",
+      "ta": "டிட்ராயிட்",
+      "ja": "デトロイト",
+      "eo": "Detrojto",
+      "uk": "Детройт",
+      "ko": "디트로이트",
+      "ar": "ديترويت",
+      "en": "Detroit",
+      "ms": "Detroit",
+      "ru": "Детройт",
+      "el": "Ντιτρόιτ",
+      "hi": "डेट्राइट, मिशिगन"
+    },
+    "lat": 42.3315509,
+    "lon": -83.0466403,
+    "country": "US",
+    "state": "Michigan"
+  },
+  {
+    "name": "Detroit",
+    "lat": 39.620712499999996,
+    "lon": -90.67594020141291,
+    "country": "US",
+    "state": "Illinois"
+  },
+  {
+    "name": "Detroit",
+    "lat": 44.7349139,
+    "lon": -122.1511929,
+    "country": "US",
+    "state": "Oregon"
+  },
+  {
+    "name": "Detroit",
+    "lat": 33.6629825,
+    "lon": -95.2662526,
+    "country": "US",
+    "state": "Texas"
+  },
+  {
+    "name": "Detroit",
+    "lat": 44.793044,
+    "lon": -69.296951,
+    "country": "US",
+    "state": "Maine"
+  }
+]

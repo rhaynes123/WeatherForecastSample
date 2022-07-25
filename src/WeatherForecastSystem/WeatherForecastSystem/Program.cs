@@ -1,8 +1,26 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using WeatherForecastSystem.Services;
+using WeatherForecastSystem.Interfaces;
+using Polly;
+#region External Links
+// https://www.youtube.com/watch?v=9pgvX_Dk0n8
+#endregion External Links
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient(name:builder.Configuration["OpenWeatherApi:ClientName"],configureClient: client =>
+{
+    client.BaseAddress = new Uri("http://api.openweathermap.org/");
 
+}).AddTransientHttpErrorPolicy(policyBuilder => policyBuilder
+.WaitAndRetryAsync( new[]
+{
+    TimeSpan.FromMilliseconds(300),
+    TimeSpan.FromMilliseconds(600),
+    TimeSpan.FromMilliseconds(800)
+}));
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
